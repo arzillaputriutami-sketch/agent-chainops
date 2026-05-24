@@ -1,0 +1,9 @@
+[project]
+name = "agent-chainops"
+version = "1.0.0"
+description = "SRE-grade agent cockpit for RPC reliability, sync stalls, peer health, and automated runbooks."
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

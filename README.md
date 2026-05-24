@@ -1,64 +1,102 @@
-# ChainOps Autopilot
+<p align="center">
+  <img src="https://img.shields.io/badge/product-agentic%20intelligence-7c3aed?style=for-the-badge" alt="Product">
+  <img src="https://img.shields.io/badge/python-3.10%2B-2563eb?style=for-the-badge" alt="Python">
+  <img src="https://img.shields.io/badge/license-MIT-16a34a?style=for-the-badge" alt="License">
+</p>
 
-ChainOps Autopilot is an AI-style infrastructure command center for multi-chain operations teams. It demonstrates how an autonomous agent can monitor RPC health, gas anomalies, validator sync drift, and bridge congestion, then produce a safe remediation trace that reviewers can inspect directly in the browser.
+<h1 align="center">ChainOps Autopilot</h1>
+<p align="center"><b>SRE-grade agent cockpit for RPC reliability, sync stalls, peer health, and automated runbooks.</b></p>
 
-Live demo target: `https://arzillaputriutami-sketch.github.io/agent-chainops/`
+<p align="center">
+  <a href="#-what-this-is">What this is</a> •
+  <a href="#-product-surface">Product surface</a> •
+  <a href="#-quick-start">Quick start</a> •
+  <a href="#-architecture">Architecture</a>
+</p>
 
-## Why this exists
+---
 
-Web3 products frequently depend on multiple fragile infrastructure layers: RPC providers, archive endpoints, bridge relayers, mempool conditions, and validator nodes. A single degraded provider can create user-facing failures even when the underlying chain is healthy.
+## 🎯 What this is
 
-ChainOps simulates a production SRE workflow:
+ChainOps Autopilot is a real repository product, not just a landing page. It includes a deterministic multi-agent reasoning core, an optional FastAPI API boundary, CLI demo runner, tests, CI, architecture docs, sample scenarios, and the existing Vercel-ready dashboard.
 
-1. Detect an infrastructure anomaly.
-2. Classify root cause and blast radius.
-3. Choose a safe automated action.
-4. Explain the action in human-readable language.
-5. Export proof for audit or reviewer submission.
+**Primary users:** chain infrastructure teams.
 
-## Demo features
+## 💼 Product surface
 
-- Four interactive mission profiles:
-  - RPC Storm
-  - Gas Surge
-  - Node Drift
-  - Bridge Queue
-- Live topology map with provider and queue states.
-- Incident queue with severity labels and mitigation notes.
-- Provider latency / risk forecast chart.
-- Autonomous remediation trace.
-- Terminal-style reasoning transcript.
-- Exportable proof report generated fully in the browser.
-- No API keys, wallets, private RPC URLs, or backend secrets.
+- **Reasoning core:** `backend/swarm.py` models specialist agents, confidence, trace IDs, risk scoring, and action plans.
+- **API boundary:** `backend/app.py` exposes `/health`, `/scenarios`, `/analyze`, and `/demo-report`.
+- **CLI console:** `python cli.py --all` generates operator-grade reports without external API keys.
+- **Demo dashboard:** `index.html` remains deployable as a static product surface.
+- **Quality gates:** `tests/test_swarm.py` plus `.github/workflows/ci.yml` keep the product verifiable.
 
-## AI model framing
+## 🧠 Agent team
 
-The public demo uses deterministic browser fixtures so it is safe to host. In a production version, the reasoning layer can be backed by a long-context model such as MiMo or Claude to summarize telemetry, generate incident RCA, and recommend remediation actions.
+- **RPC Health Watcher**
+- **Peer Quality Analyst**
+- **Sync Stall Diagnoser**
+- **Cost-Aware Capacity Planner**
+- **Runbook Commander**
 
-The browser proof focuses on the workflow and UX:
+## 🚀 Quick start
 
-- Signal collection
-- Scenario classification
-- Decision trace
-- Operator-readable evidence
-- Exportable incident report
+```bash
+git clone https://github.com/<owner>/agent-chainops.git
+cd agent-chainops
+python3 cli.py --all
+```
 
-## Reviewer usage path
+Optional API mode:
 
-1. Open the live demo.
-2. Click each mission profile in the left sidebar.
-3. Press **Run incident simulation** to cycle scenarios.
-4. Inspect the topology, incidents, chart, remediation trace, and terminal transcript.
-5. Press **Export proof report** to download a deterministic text report.
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+uvicorn backend.app:app --reload
+```
 
-## Tech stack
+## 🧪 Test
 
-- Static HTML
-- Tailwind CDN
-- Chart.js
-- Vanilla JavaScript
-- GitHub Pages deployment
+```bash
+python3 -m pytest -q
+python3 backend/swarm.py | python3 -m json.tool >/dev/null
+```
 
-## Safety notes
+## 🏗️ Architecture
 
-This repository intentionally contains no private credentials, no wallet material, no server-side code, and no live infrastructure endpoints. All data is synthetic and generated locally in the browser for safe public review.
+```mermaid
+flowchart LR
+  A[Signals] --> B[Specialist agents]
+  B --> C[Verifier]
+  C --> D[Risk score]
+  D --> E[Operator action plan]
+  E --> F[Dashboard / API / CLI]
+```
+
+## 📁 Repository map
+
+```text
+backend/swarm.py          Multi-agent reasoning engine
+backend/app.py            Optional FastAPI service boundary
+cli.py                    Local operator console
+tests/test_swarm.py       CI-friendly product tests
+examples/sample_scenario.json  Demo input payload
+docs/ARCHITECTURE.md      Reasoning-loop architecture
+docs/PRODUCT_SPEC.md      Product requirements and roadmap
+index.html                Static live dashboard
+```
+
+## 🗺️ Roadmap
+
+- [x] Static dashboard proof
+- [x] Multi-agent reasoning core
+- [x] CLI demo flow
+- [x] API boundary
+- [x] CI tests
+- [ ] Real-time connector adapters
+- [ ] Hosted report export
+- [ ] Human approval workflow
+
+## 📄 License
+
+MIT.

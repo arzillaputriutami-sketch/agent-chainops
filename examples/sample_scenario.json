@@ -1,0 +1,10 @@
+{
+  "scenario": "validator sync lag",
+  "signals": {
+    "rpc_p95_ms": 50,
+    "missed_blocks": 57,
+    "peer_churn": 64,
+    "disk_growth_gb": 71,
+    "region_error_rate": 78
+  }
+}
