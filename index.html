@@ -3,160 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChainOps Autopilot — Infrastructure Intelligence</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>ChainOps Autopilot — Multi-Chain Infrastructure Command Center</title>
+<meta name="description" content="AI operations console for multi-chain RPC reliability, incident routing, gas anomalies, and autonomous remediation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Inter',sans-serif; background:#f8fafc; color:#1e293b; min-height:100vh; }
-.sidebar { background:#0f172a; width:260px; min-height:100vh; }
-.card { background:white; border:1px solid #e2e8f0; border-radius:16px; transition:all 0.2s ease; }
-.card:hover { box-shadow:0 4px 24px rgba(0,0,0,0.06); }
-.metric-up { color:#10b981; } .metric-down { color:#ef4444; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-.fade { animation: fadeIn 0.5s ease-out forwards; }
-.status-badge { padding:2px 10px; border-radius:9999px; font-size:11px; font-weight:600; }
-.status-healthy { background:#dcfce7; color:#16a34a; }
-.status-warning { background:#fef3c7; color:#d97706; }
-.status-critical { background:#fee2e2; color:#dc2626; }
-.chart-box { position:relative; height:180px; }
+:root{--bg:#07111f;--panel:#0d1c2f;--line:#1f3a5a;--cyan:#38e8ff;--blue:#4f7cff;--lime:#a7ff3f;--amber:#ffcf5a;--red:#ff5470;--text:#e8f3ff;--muted:#8aa6c4}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 8% 8%,rgba(56,232,255,.20),transparent 32%),radial-gradient(circle at 78% 18%,rgba(79,124,255,.18),transparent 34%),linear-gradient(135deg,#06101d 0%,#09182a 48%,#050b14 100%);color:var(--text);font-family:Inter,system-ui,sans-serif;overflow-x:hidden}.grid-bg{position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(rgba(56,232,255,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(56,232,255,.18) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,#000,transparent 82%)}.orb{position:fixed;border-radius:999px;filter:blur(55px);opacity:.26;pointer-events:none}.orb.one{width:260px;height:260px;background:#38e8ff;right:-60px;top:120px}.orb.two{width:340px;height:340px;background:#4f7cff;left:-120px;bottom:20px}.shell{max-width:1440px;margin:0 auto;padding:22px}.topbar{height:70px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(138,166,196,.18);background:rgba(7,17,31,.72);backdrop-filter:blur(18px);border-radius:26px;padding:0 22px;box-shadow:0 20px 80px rgba(0,0,0,.25)}.brand{display:flex;align-items:center;gap:13px}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:grid;place-items:center;box-shadow:0 0 28px rgba(56,232,255,.42)}.brand h1{font-family:'Space Grotesk';font-size:18px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font:11px JetBrains Mono;text-transform:uppercase;letter-spacing:.16em}.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(56,232,255,.24);background:rgba(56,232,255,.08);color:#aef8ff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700}.dot{width:8px;height:8px;border-radius:999px;background:var(--lime);box-shadow:0 0 14px var(--lime)}.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;margin-top:18px}.sidebar,.panel{border:1px solid rgba(138,166,196,.16);background:linear-gradient(180deg,rgba(13,28,47,.86),rgba(8,18,31,.72));backdrop-filter:blur(18px);border-radius:28px;box-shadow:0 24px 90px rgba(0,0,0,.28)}.sidebar{padding:18px;min-height:720px}.nav-title{font:11px JetBrains Mono;color:#6e8ba9;letter-spacing:.16em;text-transform:uppercase;margin:10px 10px 12px}.nav button{width:100%;text-align:left;border:1px solid transparent;background:transparent;color:#b7cbe0;border-radius:18px;padding:13px 14px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:.2s;font-weight:700}.nav button:hover,.nav button.active{border-color:rgba(56,232,255,.28);background:rgba(56,232,255,.08);color:#fff}.nav small{display:block;color:#7390ad;font-weight:500;margin-top:3px}.scorecard{margin-top:18px;padding:17px;border:1px solid rgba(167,255,63,.22);background:linear-gradient(135deg,rgba(167,255,63,.12),rgba(56,232,255,.06));border-radius:22px}.scorecard .big{font-family:'Space Grotesk';font-size:44px;font-weight:700;line-height:1;color:#d7ff95}.scorecard p{margin:6px 0;color:var(--muted);font-size:12px}.main{display:grid;gap:18px}.hero{position:relative;overflow:hidden;padding:28px}.hero:after{content:"";position:absolute;right:30px;top:20px;width:280px;height:280px;background:radial-gradient(circle,rgba(56,232,255,.17),transparent 70%);border-radius:50%}.eyebrow{font:12px JetBrains Mono;color:var(--cyan);letter-spacing:.18em;text-transform:uppercase}.hero h2{font-family:'Space Grotesk';font-size:48px;line-height:1.02;margin:12px 0 12px;max-width:760px}.hero p{color:#a7bdd4;max-width:720px;line-height:1.65;margin:0}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}.btn{border:0;border-radius:16px;padding:12px 16px;font-weight:800;cursor:pointer;transition:.2s}.btn.primary{background:linear-gradient(135deg,var(--cyan),var(--blue));color:#03101d;box-shadow:0 12px 34px rgba(56,232,255,.22)}.btn.secondary{background:rgba(255,255,255,.06);color:#dcecff;border:1px solid rgba(138,166,196,.18)}.btn:hover{transform:translateY(-2px)}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.metric{padding:18px}.metric span{font:11px JetBrains Mono;color:#7796b6;text-transform:uppercase;letter-spacing:.12em}.metric strong{display:block;font-family:'Space Grotesk';font-size:34px;margin-top:8px}.metric em{font-style:normal;font-size:12px;color:#93abc5}.metric.good strong{color:#a7ff3f}.metric.warn strong{color:#ffcf5a}.metric.bad strong{color:#ff5470}.content-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}.panel{padding:20px}.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.section-title h3{font-family:'Space Grotesk';font-size:20px;margin:0}.section-title code{font:12px JetBrains Mono;color:var(--muted);background:rgba(255,255,255,.05);padding:6px 9px;border-radius:10px}.map{position:relative;height:355px;border-radius:24px;border:1px solid rgba(56,232,255,.18);background:linear-gradient(145deg,rgba(56,232,255,.06),rgba(79,124,255,.08)),radial-gradient(circle at 30% 20%,rgba(167,255,63,.08),transparent 26%);overflow:hidden}.lane{position:absolute;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.55}.lane.l1{left:58px;right:70px;top:88px;transform:rotate(6deg)}.lane.l2{left:72px;right:80px;top:190px;transform:rotate(-9deg)}.lane.l3{left:110px;right:60px;top:280px;transform:rotate(3deg)}.node{position:absolute;width:116px;border:1px solid rgba(138,166,196,.26);background:rgba(7,17,31,.84);border-radius:18px;padding:12px;box-shadow:0 18px 45px rgba(0,0,0,.3)}.node strong{display:block;font-size:13px}.node small{color:var(--muted)}.node .ring{width:34px;height:34px;border-radius:50%;border:3px solid var(--cyan);box-shadow:0 0 20px rgba(56,232,255,.45);margin-bottom:8px}.n1{left:46px;top:45px}.n2{right:58px;top:67px}.n3{left:222px;top:158px}.n4{right:186px;bottom:46px}.n5{left:72px;bottom:34px}.incident-list{display:grid;gap:12px}.incident{border:1px solid rgba(138,166,196,.18);background:rgba(255,255,255,.045);border-radius:18px;padding:14px}.incident .row{display:flex;justify-content:space-between;gap:10px;align-items:center}.badge{font:11px JetBrains Mono;border-radius:999px;padding:6px 9px;font-weight:700}.critical{background:rgba(255,84,112,.14);color:#ff9aac;border:1px solid rgba(255,84,112,.28)}.warning{background:rgba(255,207,90,.14);color:#ffe18d;border:1px solid rgba(255,207,90,.28)}.info{background:rgba(56,232,255,.12);color:#aef8ff;border:1px solid rgba(56,232,255,.28)}.incident p{color:#9fb5cc;font-size:13px;line-height:1.5;margin:9px 0 0}.timeline{display:grid;gap:11px}.step{display:grid;grid-template-columns:34px 1fr;gap:11px;align-items:start}.step .num{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:rgba(56,232,255,.1);border:1px solid rgba(56,232,255,.22);font:12px JetBrains Mono;color:#b8fbff}.step strong{font-size:13px}.step p{margin:4px 0 0;font-size:12px;color:#8aa6c4;line-height:1.5}.terminal{background:#020810;border:1px solid rgba(56,232,255,.18);border-radius:22px;overflow:hidden}.term-head{display:flex;gap:7px;padding:12px 14px;border-bottom:1px solid rgba(138,166,196,.12);background:rgba(255,255,255,.03)}.term-head i{width:10px;height:10px;border-radius:50%;background:#ff5f57}.term-head i:nth-child(2){background:#ffbd2e}.term-head i:nth-child(3){background:#28c840}.terminal pre{font:12px/1.75 JetBrains Mono;color:#b6e9ff;margin:0;padding:16px;white-space:pre-wrap}.chart-wrap{height:255px}.route-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.route{border:1px solid rgba(138,166,196,.16);background:rgba(255,255,255,.04);border-radius:20px;padding:16px}.route h4{margin:0 0 8px;font-family:'Space Grotesk';font-size:16px}.route p{color:#8fa8c2;font-size:13px;line-height:1.5;margin:0}.route.active{border-color:rgba(56,232,255,.42);box-shadow:0 0 0 1px rgba(56,232,255,.08) inset}.footer{padding:18px;text-align:center;color:#7190ad;font-size:12px}@media(max-width:1100px){.layout{grid-template-columns:1fr}.sidebar{min-height:auto}.metrics{grid-template-columns:repeat(2,1fr)}.content-grid{grid-template-columns:1fr}.hero h2{font-size:38px}}@media(max-width:680px){.shell{padding:12px}.topbar{height:auto;align-items:flex-start;gap:14px;flex-direction:column}.hero h2{font-size:31px}.metrics,.route-cards{grid-template-columns:1fr}.panel,.hero{padding:18px}.map{height:430px}.node{width:108px}.n3{left:150px}.n4{right:20px}.content-grid{gap:12px}}
 </style>
 </head>
 <body>
-<div class="flex">
-  <aside class="sidebar text-white p-6 shrink-0">
-    <div class="mb-8">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center">
-          <svg class="w-5 h-5" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        </div>
-        <div>
-          <h1 class="font-bold text-base">ChainOps</h1>
-          <p class="text-[10px] text-slate-400 tracking-wider">AUTOPILOT</p>
-        </div>
+<div class="grid-bg"></div><div class="orb one"></div><div class="orb two"></div>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand"><div class="logo">⚡</div><div><h1>ChainOps Autopilot</h1><p>multi-chain infra intelligence</p></div></div>
+    <div class="flex gap-2 flex-wrap"><span class="pill"><span class="dot"></span> autonomous routing online</span><span class="pill">SLA 99.985%</span></div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="nav-title">mission profiles</div>
+      <div class="nav" id="scenarios">
+        <button class="active" data-scenario="rpc">RPC Storm <small>latency + failover control</small></button>
+        <button data-scenario="gas">Gas Surge <small>mempool anomaly mitigation</small></button>
+        <button data-scenario="node">Node Drift <small>validator sync recovery</small></button>
+        <button data-scenario="bridge">Bridge Queue <small>cross-chain congestion routing</small></button>
       </div>
-    </div>
-    <nav class="space-y-1">
-      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-white/10 text-sm font-medium" href="#">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/></svg>
-        Overview</a>
-      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 text-sm transition" href="#">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
-        RPC Health</a>
-      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 text-sm transition" href="#">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        Gas Monitor</a>
-      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 text-sm transition" href="#">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-        Node Ops</a>
-    </nav>
-    <div class="mt-auto pt-8">
-      <div class="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4">
-        <p class="text-xs font-semibold text-emerald-400 mb-1">System Health</p>
-        <p class="text-2xl font-bold text-white">99.97%</p>
-        <p class="text-[11px] text-slate-400 mt-1">Last 30 days uptime</p>
+      <div class="scorecard"><p>Autonomy confidence</p><div class="big" id="confidence">96</div><p id="confidenceCopy">Provider degradation isolated before user-facing error budget was burned.</p></div>
+      <div class="mt-5 p-4 rounded-2xl border border-white/10 bg-white/5">
+        <div class="text-xs uppercase tracking-[.18em] text-slate-400 font-mono mb-3">agent stack</div>
+        <div class="space-y-2 text-sm text-slate-300"><div>• MiMo reasoning: root-cause chain</div><div>• Claude/Cursor: remediation plan</div><div>• Browser dashboard: operator proof</div><div>• Static deterministic simulation</div></div>
       </div>
-    </div>
-  </aside>
-
-  <main class="flex-1 p-8 overflow-auto">
-    <div class="flex items-center justify-between mb-8 fade">
-      <div>
-        <p class="text-xs text-emerald-600 font-semibold tracking-wider uppercase mb-1">Infrastructure Console</p>
-        <h2 class="text-2xl font-bold text-slate-900">Operations Overview</h2>
-      </div>
-      <div class="flex items-center gap-3">
-        <span class="status-badge status-healthy">All Systems Operational</span>
-        <div class="flex items-center gap-2 text-sm text-slate-500">
-          <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-          Live
-        </div>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-4 gap-4 mb-6 fade">
-      <div class="card p-5">
-        <p class="text-xs text-slate-500 mb-1">Endpoints Monitored</p>
-        <p class="text-3xl font-bold text-slate-900">128</p>
-        <p class="text-xs metric-up mt-2">↑ 6 added this week</p>
-      </div>
-      <div class="card p-5">
-        <p class="text-xs text-slate-500 mb-1">Avg Latency</p>
-        <p class="text-3xl font-bold text-slate-900">45<span class="text-lg text-slate-400">ms</span></p>
-        <p class="text-xs metric-up mt-2">↓ 12ms improvement</p>
-      </div>
-      <div class="card p-5">
-        <p class="text-xs text-slate-500 mb-1">Error Rate (24h)</p>
-        <p class="text-3xl font-bold text-slate-900">0.03<span class="text-lg text-slate-400">%</span></p>
-        <p class="text-xs metric-up mt-2">↓ Within SLA</p>
-      </div>
-      <div class="card p-5">
-        <p class="text-xs text-slate-500 mb-1">Auto-Remediated</p>
-        <p class="text-3xl font-bold text-emerald-600">23</p>
-        <p class="text-xs metric-up mt-2">↑ 8 today</p>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-3 gap-4 mb-6 fade">
-      <div class="col-span-2 card p-6">
-        <h3 class="text-sm font-semibold text-slate-700 mb-4">RPC Latency by Provider (ms)</h3>
-        <div class="chart-box"><canvas id="latencyChart"></canvas></div>
-      </div>
-      <div class="card p-6">
-        <h3 class="text-sm font-semibold text-slate-700 mb-4">Request Distribution</h3>
-        <div class="chart-box"><canvas id="distChart"></canvas></div>
-      </div>
-    </div>
-
-    <div class="card p-6 fade">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
-          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0"/></svg>
-        </div>
-        <div>
-          <h3 class="text-sm font-semibold text-slate-900">AI Agent Analysis</h3>
-          <p class="text-xs text-slate-500">Powered by MiMo Long-Context Reasoning</p>
-        </div>
-      </div>
-      <div class="space-y-3">
-        <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="status-badge status-warning">WARNING</span>
-            <span class="text-xs text-slate-400">5 min ago</span>
+    </aside>
+    <main class="main">
+      <section class="panel hero">
+        <div class="eyebrow">AI SRE for Web3 Infrastructure</div>
+        <h2 id="heroTitle">Detect RPC degradation, reroute traffic, and explain every action.</h2>
+        <p id="heroCopy">ChainOps turns noisy multi-chain telemetry into an operator-ready incident plan. It scores provider health, predicts blast radius, chooses a safe failover route, and records evidence for reviewers.</p>
+        <div class="hero-actions"><button class="btn primary" id="runSimulation">Run incident simulation</button><button class="btn secondary" id="exportReport">Export proof report</button></div>
+      </section>
+      <section class="metrics">
+        <div class="panel metric good"><span>healthy endpoints</span><strong id="m1">124</strong><em>across 11 chains</em></div>
+        <div class="panel metric warn"><span>p95 latency</span><strong id="m2">71ms</strong><em id="m2copy">after reroute</em></div>
+        <div class="panel metric bad"><span>open incidents</span><strong id="m3">2</strong><em>1 critical contained</em></div>
+        <div class="panel metric good"><span>auto-remediated</span><strong id="m4">37</strong><em>last 24 hours</em></div>
+      </section>
+      <section class="content-grid">
+        <div class="panel">
+          <div class="section-title"><h3>Live topology map</h3><code id="topologyCode">mode: rpc-failover</code></div>
+          <div class="map">
+            <div class="lane l1"></div><div class="lane l2"></div><div class="lane l3"></div>
+            <div class="node n1"><div class="ring"></div><strong>Ethereum</strong><small>primary RPC</small></div>
+            <div class="node n2"><div class="ring" style="border-color:#a7ff3f"></div><strong>Arbitrum</strong><small>backup active</small></div>
+            <div class="node n3"><div class="ring" style="border-color:#ffcf5a"></div><strong>Polygon</strong><small>degraded</small></div>
+            <div class="node n4"><div class="ring" style="border-color:#4f7cff"></div><strong>Base</strong><small>normal</small></div>
+            <div class="node n5"><div class="ring" style="border-color:#ff5470"></div><strong>Queue</strong><small>rate limited</small></div>
           </div>
-          <p class="text-sm font-semibold text-slate-800 mb-1">Alchemy Polygon endpoint degraded</p>
-          <p class="text-xs text-slate-600">Latency spiked from 30ms to 890ms. Agent automatically failed over to QuickNode backup. Estimated recovery: 15 minutes. No user impact detected.</p>
         </div>
-        <div class="p-4 rounded-xl bg-blue-50 border border-blue-200">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="status-badge" style="background:#dbeafe;color:#2563eb">INFO</span>
-            <span class="text-xs text-slate-400">22 min ago</span>
-          </div>
-          <p class="text-sm font-semibold text-slate-800 mb-1">Remediation completed: Infura Ethereum mainnet</p>
-          <p class="text-xs text-slate-600">Error rate spiked to 2.3% due to mempool congestion. Agent rebalanced request routing across 3 providers. Current rate: 0.1%.</p>
+        <div class="panel">
+          <div class="section-title"><h3>Incident queue</h3><code id="queueStamp">T+00:48</code></div>
+          <div class="incident-list" id="incidentList"></div>
         </div>
-      </div>
-    </div>
-  </main>
+      </section>
+      <section class="content-grid">
+        <div class="panel">
+          <div class="section-title"><h3>Provider latency forecast</h3><code>synthetic telemetry</code></div>
+          <div class="chart-wrap"><canvas id="latencyChart"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="section-title"><h3>Autonomous remediation trace</h3><code id="traceMode">safe mode</code></div>
+          <div class="timeline" id="trace"></div>
+        </div>
+      </section>
+      <section class="panel terminal">
+        <div class="term-head"><i></i><i></i><i></i></div>
+        <pre id="terminalLog">chainops@autopilot:~$ awaiting simulation...</pre>
+      </section>
+      <section class="route-cards">
+        <div class="route active"><h4>Human-readable RCA</h4><p>Each decision includes signal source, confidence, rollback point, and user impact estimate.</p></div>
+        <div class="route"><h4>Zero-secret demo</h4><p>Runs entirely in the browser with deterministic fixture data; safe for public MiMo proof review.</p></div>
+        <div class="route"><h4>Reviewer proof ready</h4><p>Export button generates a text report with scenario, metrics, and remediation transcript.</p></div>
+      </section>
+      <footer class="footer">Built for Xiaomi MiMo 100T Creator Incentive — ChainOps Autopilot / Project #02</footer>
+    </main>
+  </div>
 </div>
 <script>
-new Chart(document.getElementById('latencyChart').getContext('2d'), {
-  type:'bar',
-  data:{
-    labels:['Alchemy','Infura','QuickNode','Ankr','Chainstack','DrPC'],
-    datasets:[
-      {label:'Current',data:[45,52,38,67,55,41],backgroundColor:'#10b981',borderRadius:6,barPercentage:0.6},
-      {label:'24h ago',data:[30,48,42,71,50,44],backgroundColor:'#e2e8f0',borderRadius:6,barPercentage:0.6}
-    ]
-  },
-  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',font:{size:11}}}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:'#f1f5f9'},ticks:{font:{size:11}}}}}
-});
-new Chart(document.getElementById('distChart').getContext('2d'), {
-  type:'doughnut',
-  data:{labels:['Ethereum','Polygon','Arbitrum','Optimism','Base','BSC'],datasets:[{data:[35,25,18,12,7,3],backgroundColor:['#6366f1','#8b5cf6','#a78bfa','#c4b5fd','#ddd6fe','#ede9fe'],borderWidth:0}]},
-  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',font:{size:11}}}},cutout:'65%'}
-});
+const scenarioData={
+ rpc:{title:'Detect RPC degradation, reroute traffic, and explain every action.',copy:'A Polygon provider drifted from 42ms to 890ms. ChainOps isolates the blast radius, shifts traffic to a healthy backup, throttles non-critical calls, and writes a reviewer-safe incident log.',confidence:96,conf:'Provider degradation isolated before user-facing error budget was burned.',metrics:['124','71ms','2','37'],m2:'after reroute',topology:'mode: rpc-failover',stamp:'T+00:48',traceMode:'safe mode',incidents:[['CRITICAL','Polygon primary RPC p95 890ms','Traffic shifted to QuickNode backup. Write requests queued for replay after stability window.'],['WARNING','Alchemy archive endpoint partial timeout','Read-heavy workloads rebalanced across Infura + Ankr pool.'],['INFO','Synthetic health probe completed','No customer-facing route exceeds the 120ms SLO after mitigation.']],trace:[['01','Detect','Outlier detector flags p95 latency above 6x baseline.'],['02','Correlate','Mempool load normal; issue isolated to provider edge.'],['03','Remediate','Failover policy reroutes 78% of Polygon reads to backup pool.'],['04','Verify','Health probes confirm error budget burn stopped at 0.04%.']],log:['[signal] polygon.rpc.primary p95=890ms baseline=42ms','[reason] mempool pressure: false | provider edge fault: likely','[action] shift read traffic: quicknode=52%, ankr=26%, infura=22%','[guard] disable non-critical archive scans for 15m','[result] p95 recovered to 71ms | error rate 0.04%']},
+ gas:{title:'Predict gas spikes before automation burns budget.',copy:'The gas anomaly agent recognizes a mempool surge, pauses non-urgent automations, prioritizes settlement transactions, and recommends a delayed execution window.',confidence:93,conf:'Gas surge contained by delaying low-priority jobs and protecting critical transactions.',metrics:['118','112gwei','1','29'],m2:'priority fee cap',topology:'mode: gas-surge',stamp:'T+01:12',traceMode:'cost shield',incidents:[['WARNING','Base priority fee spike +340%','Automation queue switched to budget-aware mode.'],['INFO','Settlement transactions prioritized','Critical route preserved below max fee ceiling.'],['INFO','Low urgency jobs delayed','18 background calls postponed for next cheap block window.']],trace:[['01','Sample','Compares gas oracle, block fullness, and pending tx queue.'],['02','Classify','Spike likely temporary, not chain halt.'],['03','Protect','Apply fee caps and delay non-critical automations.'],['04','Resume','Re-open queue when 5-block median drops below threshold.']],log:['[signal] base.maxFeePerGas=112gwei threshold=38gwei','[action] pause queue: analytics, NFT indexing, reward polling','[action] preserve: settlement, bridge finalization, liquidation guards','[result] projected spend saved: 41.8%']},
+ node:{title:'Catch validator sync drift before the node lies to you.',copy:'ChainOps checks head lag, peer count, disk pressure, and RPC consistency. When drift appears, it moves read traffic away and opens a step-by-step recovery path.',confidence:91,conf:'Sync drift detected early; stale reads prevented before dApp impact.',metrics:['31','3 blocks','1','18'],m2:'head lag',topology:'mode: node-drift',stamp:'T+00:36',traceMode:'recovery',incidents:[['CRITICAL','Validator node head lag: 3 blocks','Endpoint removed from read rotation until catch-up verified.'],['WARNING','Peer count below normal band','Agent recommends peer refresh and disk IO check.'],['INFO','Snapshot consistency check passed','No corrupted state detected in sampled block headers.']],trace:[['01','Probe','Compare local head with 5 public references.'],['02','Isolate','Mark node stale and remove from router.'],['03','Diagnose','Peer count low; disk wait moderate; CPU normal.'],['04','Recover','Refresh peers, watch head lag, then rejoin pool.']],log:['[signal] local_head=19384421 consensus_head=19384424 lag=3','[guard] remove endpoint: validator-rpc-02','[diagnosis] peer_count=7 expected>=18 disk_wait=11%','[result] stale-read risk neutralized']},
+ bridge:{title:'Route cross-chain queues around congestion without guessing.',copy:'Bridge congestion can turn normal user flows into support tickets. ChainOps models queue delay, finality risk, and alternative routes before recommending the safest path.',confidence:94,conf:'Bridge backlog reduced by route scoring and finality-aware batching.',metrics:['9','18m','3','24'],m2:'queue ETA',topology:'mode: bridge-queue',stamp:'T+02:04',traceMode:'routing',incidents:[['WARNING','Arbitrum → Base queue ETA 42m','New transfers shifted to Optimism route with lower finality delay.'],['WARNING','Liquidity buffer below target','Agent recommends batching small transfers for 12 minutes.'],['INFO','Replay guard active','Duplicate bridge submission risk blocked by nonce registry.']],trace:[['01','Measure','Estimate queue ETA from relayer throughput.'],['02','Score','Compare route cost, finality, failure probability.'],['03','Route','Shift non-urgent flow to Optimism bridge lane.'],['04','Audit','Record nonce, route, expected settlement window.']],log:['[signal] bridge.arb-base eta=42m liquidity_buffer=61%','[score] optimism route: cost +0.8%, finality -19m, risk low','[action] batch small transfers and shift new flows','[result] queue pressure projected down 33%']}
+};
+let chart;
+function badgeClass(label){return label==='CRITICAL'?'critical':label==='WARNING'?'warning':'info'}
+function renderScenario(key){const d=scenarioData[key];document.querySelectorAll('#scenarios button').forEach(b=>b.classList.toggle('active',b.dataset.scenario===key));heroTitle.textContent=d.title;heroCopy.textContent=d.copy;confidence.textContent=d.confidence;confidenceCopy.textContent=d.conf;m1.textContent=d.metrics[0];m2.textContent=d.metrics[1];m3.textContent=d.metrics[2];m4.textContent=d.metrics[3];m2copy.textContent=d.m2;topologyCode.textContent=d.topology;queueStamp.textContent=d.stamp;traceMode.textContent=d.traceMode;incidentList.innerHTML=d.incidents.map(i=>`<div class="incident"><div class="row"><span class="badge ${badgeClass(i[0])}">${i[0]}</span><small>${d.stamp}</small></div><p><strong style="color:#e8f3ff">${i[1]}</strong><br>${i[2]}</p></div>`).join('');trace.innerHTML=d.trace.map((s,idx)=>`<div class="step"><div class="num">${String(idx+1).padStart(2,'0')}</div><div><strong>${s[1]}</strong><p>${s[2]}</p></div></div>`).join('');terminalLog.textContent='chainops@autopilot:~$ run --scenario '+key+'\n'+d.log.join('\n')+'\n[status] remediation plan committed';updateChart(key)}
+function updateChart(key){const values={rpc:[42,890,210,71,64,58],gas:[31,55,112,98,44,36],node:[48,51,400,300,155,52],bridge:[66,80,120,210,160,93]}[key];if(chart){chart.data.datasets[0].data=values;chart.update();}}
+function initChart(){const ctx=document.getElementById('latencyChart');chart=new Chart(ctx,{type:'line',data:{labels:['T-25','T-20','T-15','T-10','T-5','Now'],datasets:[{label:'Risk/Latency Index',data:[42,890,210,71,64,58],borderColor:'#38e8ff',backgroundColor:'rgba(56,232,255,.14)',fill:true,tension:.42,pointBackgroundColor:'#a7ff3f',pointBorderWidth:0,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9fb5cc',usePointStyle:true}}},scales:{x:{ticks:{color:'#7896b4'},grid:{color:'rgba(138,166,196,.08)'}},y:{ticks:{color:'#7896b4'},grid:{color:'rgba(138,166,196,.08)'}}}})}
+document.querySelectorAll('#scenarios button').forEach(btn=>btn.addEventListener('click',()=>renderScenario(btn.dataset.scenario)));
+runSimulation.addEventListener('click',()=>{const keys=Object.keys(scenarioData);const current=[...document.querySelectorAll('#scenarios button')].findIndex(b=>b.classList.contains('active'));renderScenario(keys[(current+1)%keys.length]);});
+exportReport.addEventListener('click',()=>{const active=document.querySelector('#scenarios button.active').dataset.scenario;const d=scenarioData[active];const report=`ChainOps Autopilot Proof Report\nScenario: ${active}\nConfidence: ${d.confidence}%\nMetrics: ${d.metrics.join(' / ')}\nTrace:\n${d.trace.map(x=>'- '+x[1]+': '+x[2]).join('\n')}\nLog:\n${d.log.join('\n')}`;const blob=new Blob([report],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='chainops-proof-report.txt';a.click();URL.revokeObjectURL(a.href);});
+initChart();renderScenario('rpc');
 </script>
 </body>
 </html>
