@@ -1,4 +1,4 @@
 ChainOps Commander
-5 specialist agents completed; 2 high-priority findings; 38396 estimated tokens.
-tokens=38396
-daily_projection=3686016
+5 specialist agents completed; 4 high-priority findings; 48481 estimated tokens.
+tokens=48481
+daily=4654176

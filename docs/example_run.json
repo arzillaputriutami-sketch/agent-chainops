@@ -3,48 +3,48 @@
   "status": "completed",
   "mode": "deterministic-reviewer-demo",
   "latency_ms": 0,
-  "summary": "5 specialist agents completed; 2 high-priority findings; 38396 estimated tokens.",
+  "summary": "5 specialist agents completed; 4 high-priority findings; 48481 estimated tokens.",
   "token_usage": {
     "project": "ChainOps Commander",
     "events": [
       {
-        "timestamp": "2026-05-25T20:14:50.835807+00:00",
+        "timestamp": "2026-05-25T20:21:02.666791+00:00",
         "project": "ChainOps Commander",
         "agent": "Liquidity Scout",
-        "estimated_tokens": 4830,
+        "estimated_tokens": 9186,
         "severity": "high"
       },
       {
-        "timestamp": "2026-05-25T20:14:50.835827+00:00",
+        "timestamp": "2026-05-25T20:21:02.666811+00:00",
         "project": "ChainOps Commander",
         "agent": "Exploit Sentinel",
-        "estimated_tokens": 10360,
+        "estimated_tokens": 13160,
         "severity": "low"
       },
       {
-        "timestamp": "2026-05-25T20:14:50.835833+00:00",
+        "timestamp": "2026-05-25T20:21:02.666817+00:00",
         "project": "ChainOps Commander",
         "agent": "Oracle Auditor",
-        "estimated_tokens": 12084,
-        "severity": "low"
-      },
-      {
-        "timestamp": "2026-05-25T20:14:50.835837+00:00",
-        "project": "ChainOps Commander",
-        "agent": "Treasury Guardian",
-        "estimated_tokens": 5978,
+        "estimated_tokens": 5410,
         "severity": "high"
       },
       {
-        "timestamp": "2026-05-25T20:14:50.835840+00:00",
+        "timestamp": "2026-05-25T20:21:02.666820+00:00",
+        "project": "ChainOps Commander",
+        "agent": "Treasury Guardian",
+        "estimated_tokens": 13791,
+        "severity": "critical"
+      },
+      {
+        "timestamp": "2026-05-25T20:21:02.666824+00:00",
         "project": "ChainOps Commander",
         "agent": "Incident Reporter",
-        "estimated_tokens": 5144,
-        "severity": "low"
+        "estimated_tokens": 6934,
+        "severity": "high"
       }
     ],
-    "total_estimated_tokens": 38396,
-    "daily_projection_tokens": 3686016,
+    "total_estimated_tokens": 48481,
+    "daily_projection_tokens": 4654176,
     "agent_count": 5
   },
   "findings": [
@@ -52,71 +52,71 @@
       "agent": "Liquidity Scout",
       "role": "tracks pool depth, volatility spikes, and suspicious flow concentration",
       "severity": "high",
-      "confidence": 0.74,
-      "finding": "Liquidity Scout reviewed DeFi risk monitoring signal: validator RPC latency rises while block height lags peers. Risk pattern=high confidence=0.74.",
+      "confidence": 0.67,
+      "finding": "Liquidity Scout reviewed DeFi risk monitoring signal: validator RPC latency rises while block height lags. Risk pattern=high confidence=0.67.",
       "evidence": [
         "domain=DeFi risk monitoring",
-        "subject_hash=8eb1c69e74",
+        "subject_hash=842dc8a715",
         "agent_stage=1"
       ],
       "recommendation": "Run liquidity scout follow-up pass, capture artifacts, then prioritize high items first.",
-      "estimated_tokens": 4830
+      "estimated_tokens": 9186
     },
     {
       "agent": "Exploit Sentinel",
       "role": "maps events to known attack primitives and detects anomalous protocol behavior",
       "severity": "low",
-      "confidence": 0.92,
-      "finding": "Exploit Sentinel reviewed DeFi risk monitoring signal: validator RPC latency rises while block height lags peers. Risk pattern=low confidence=0.92.",
+      "confidence": 0.79,
+      "finding": "Exploit Sentinel reviewed DeFi risk monitoring signal: validator RPC latency rises while block height lags. Risk pattern=low confidence=0.79.",
       "evidence": [
         "domain=DeFi risk monitoring",
-        "subject_hash=8eb1c69e74",
+        "subject_hash=842dc8a715",
         "agent_stage=2"
       ],
       "recommendation": "Run exploit sentinel follow-up pass, capture artifacts, then prioritize low items first.",
-      "estimated_tokens": 10360
+      "estimated_tokens": 13160
     },
     {
       "agent": "Oracle Auditor",
       "role": "checks oracle drift, stale feeds, and manipulation windows",
-      "severity": "low",
-      "confidence": 0.77,
-      "finding": "Oracle Auditor reviewed DeFi risk monitoring signal: validator RPC latency rises while block height lags peers. Risk pattern=low confidence=0.77.",
+      "severity": "high",
+      "confidence": 0.88,
+      "finding": "Oracle Auditor reviewed DeFi risk monitoring signal: validator RPC latency rises while block height lags. Risk pattern=high confidence=0.88.",
       "evidence": [
         "domain=DeFi risk monitoring",
-        "subject_hash=8eb1c69e74",
+        "subject_hash=842dc8a715",
         "agent_stage=3"
       ],
-      "recommendation": "Run oracle auditor follow-up pass, capture artifacts, then prioritize low items first.",
-      "estimated_tokens": 12084
+      "recommendation": "Run oracle auditor follow-up pass, capture artifacts, then prioritize high items first.",
+      "estimated_tokens": 5410
     },
     {
       "agent": "Treasury Guardian",
       "role": "scores treasury exposure and proposes emergency controls",
-      "severity": "high",
-      "confidence": 0.9,
-      "finding": "Treasury Guardian reviewed DeFi risk monitoring signal: validator RPC latency rises while block height lags peers. Risk pattern=high confidence=0.9.",
+      "severity": "critical",
+      "confidence": 0.81,
+      "finding": "Treasury Guardian reviewed DeFi risk monitoring signal: validator RPC latency rises while block height lags. Risk pattern=critical confidence=0.81.",
       "evidence": [
         "domain=DeFi risk monitoring",
-        "subject_hash=8eb1c69e74",
+        "subject_hash=842dc8a715",
         "agent_stage=4"
       ],
-      "recommendation": "Run treasury guardian follow-up pass, capture artifacts, then prioritize high items first.",
-      "estimated_tokens": 5978
+      "recommendation": "Run treasury guardian follow-up pass, capture artifacts, then prioritize critical items first.",
+      "estimated_tokens": 13791
     },
     {
       "agent": "Incident Reporter",
       "role": "synthesizes operator-grade markdown incident reports",
-      "severity": "low",
-      "confidence": 0.79,
-      "finding": "Incident Reporter reviewed DeFi risk monitoring signal: validator RPC latency rises while block height lags peers. Risk pattern=low confidence=0.79.",
+      "severity": "high",
+      "confidence": 0.85,
+      "finding": "Incident Reporter reviewed DeFi risk monitoring signal: validator RPC latency rises while block height lags. Risk pattern=high confidence=0.85.",
       "evidence": [
         "domain=DeFi risk monitoring",
-        "subject_hash=8eb1c69e74",
+        "subject_hash=842dc8a715",
         "agent_stage=5"
       ],
-      "recommendation": "Run incident reporter follow-up pass, capture artifacts, then prioritize low items first.",
-      "estimated_tokens": 5144
+      "recommendation": "Run incident reporter follow-up pass, capture artifacts, then prioritize high items first.",
+      "estimated_tokens": 6934
     }
   ]
 }
