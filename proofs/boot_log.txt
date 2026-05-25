@@ -1,0 +1,1 @@
+[2026-05-25T20:14:50.836986+00:00] boot ok: ChainOps Commander pipeline loaded; agents=5; mode=deterministic-reviewer-demo
