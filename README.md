@@ -155,3 +155,20 @@ print(run_pipeline_sync("ChainOps Commander", {"subject":"rpc_reliability quicks
 PY
 ```
 
+## V5 Domain Product Layer
+
+Autonomous chain operations cockpit for RPC reliability, sync stalls, peer health, and automated runbooks.
+
+### Live Reviewer Endpoints
+
+- `GET /domain/signals` — inspect supported domain signals and actions
+- `POST /domain/analyze` — submit scenario + signals, receive risk score, findings, runbook, trace id
+- `GET /domain/demo` — four deterministic demo reports
+- `POST /agent-run` — MiMo multi-specialist pipeline proof
+
+### What Changed
+
+- Added `backend/domain/intelligence.py` with deterministic domain scoring.
+- Added `tests/test_domain_intelligence.py` contract tests.
+- Added `docs/DOMAIN_PRODUCT.md` reviewer workflow.
+- Added `proofs/domain_product_proof.json` proof artifact.

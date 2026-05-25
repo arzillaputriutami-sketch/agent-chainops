@@ -1,0 +1,30 @@
+{
+  "product": "Agent ChainOps",
+  "repo": "https://github.com/arzillaputriutami-sketch/agent-chainops",
+  "upgrade": "V5 domain productization",
+  "domain": "chain operations / node reliability",
+  "signals": [
+    "rpc_p95_ms",
+    "sync_lag_blocks",
+    "peer_count",
+    "missed_slots",
+    "disk_growth_gb",
+    "error_rate"
+  ],
+  "scenarios": [
+    "RPC p95 spikes while indexer lag grows",
+    "validator peers drop below quorum during epoch boundary",
+    "relayer queue stalls after chain reorg",
+    "archive node disk growth exceeds forecast"
+  ],
+  "endpoints": [
+    "/domain/signals",
+    "/domain/analyze",
+    "/domain/demo",
+    "/agent-run"
+  ],
+  "token_evidence": {
+    "total_estimated_tokens": 46362,
+    "source": "deterministic proof budget + existing MiMo pipeline"
+  }
+}
